@@ -24,6 +24,26 @@ cameraTrigger.onclick = function() {
     cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
     cameraOutput.src = cameraSensor.toDataURL("image/webp");
     cameraOutput.classList.add("taken");
+    
+    var imgURL = canvas.toDataURL();
+    console.log(imgURL);
+    $.ajax({
+    type: "POST",
+    url: "http://url/take_pic", 
+    data: imgURL,
+    success: function(data) {
+      if (data.success) {
+        alert('Your file was successfully uploaded!');
+      } else {
+        alert('There was an error uploading your file!');
+      }
+    },
+    error: function(data) {
+      alert('There was an error uploading your file!');
+    }
+  }).done(function() {
+    console.log("Sent");
+  });
 };
 // Start the video stream when the window loads
 window.addEventListener("load", cameraStart, false);
